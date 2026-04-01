@@ -41,7 +41,6 @@ civicvote/
 │       ├── schema.prisma   Full DB schema
 │       └── seed.js         Demo data
 ├── student_voting_system_v2.html   Visual prototype (reference)
-└── CURSOR_PROMPT.md                Paste into Cursor AI to get full context
 ```
 
 ---
