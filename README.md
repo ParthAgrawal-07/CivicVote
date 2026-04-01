@@ -248,19 +248,6 @@ GET /api/admin/audit        Paginated audit log (?page=1&limit=50)
 
 ---
 
-## Using with Cursor AI
-
-Open the project folder in Cursor, then press `Cmd+L` (Mac) or `Ctrl+L` (Windows) to open the AI chat.
-Paste the contents of **`CURSOR_PROMPT.md`** as your first message.
-
-Cursor will have full context of the architecture, schema, and all files and can:
-- Complete any TODO sections
-- Add new features
-- Debug errors
-- Write tests
-
----
-
 ## License
 
 MIT — free to use and modify for your college's Student Body Government.
