@@ -1,0 +1,127 @@
+// backend/prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(cuid())
+  studentId    String     @unique
+  email        String     @unique
+  password     String
+  name         String
+  year         Int
+  department   String?
+  role         Role       @default(STUDENT)
+  verified     Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  otps         Otp[]
+  auditLogs    AuditLog[]
+
+  @@index([email])
+  @@index([studentId])
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+model Election {
+  id            String      @id @default(cuid())
+  title         String
+  category      Category
+  eligibleGroup String      @default("ALL")
+  anonymous     Boolean     @default(true)
+  allowWriteIn  Boolean     @default(false)
+  showLive      Boolean     @default(false)
+  status        ElecStatus  @default(DRAFT)
+  startsAt      DateTime
+  endsAt        DateTime
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  candidates    Candidate[]
+  ballots       Ballot[]
+
+  @@index([status])
+  @@index([category])
+}
+
+enum Category {
+  PRESIDENT_VP
+  CLUB_HEAD
+  CLASS_REP
+}
+
+enum ElecStatus {
+  DRAFT
+  LIVE
+  CLOSED
+}
+
+model Candidate {
+  id         String   @id @default(cuid())
+  name       String
+  role       String   @default("")
+  photoUrl   String?
+  electionId String
+  election   Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  ballots    Ballot[]
+  createdAt  DateTime @default(now())
+
+  @@index([electionId])
+}
+
+model Ballot {
+  id          String    @id @default(cuid())
+  // voterToken = sha256(userId + electionId + APP_SECRET)
+  // Never stores userId directly — this is what makes votes anonymous
+  voterToken  String
+  electionId  String
+  candidateId String
+  castAt      DateTime  @default(now())
+  election    Election  @relation(fields: [electionId], references: [id])
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+
+  // This unique constraint enforces one vote per student per election
+  @@unique([voterToken, electionId])
+  @@index([electionId])
+  @@index([candidateId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  type      LogType
+  message   String
+  detail    String
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([type])
+}
+
+enum LogType {
+  VOTE
+  ADMIN
+  WARN
+  SYS
+}
+
+model Otp {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}

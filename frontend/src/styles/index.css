@@ -1,0 +1,143 @@
+/* frontend/src/styles/index.css */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans bg-paper text-ink;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-paper-3 rounded; }
+
+  h1, h2, h3 { @apply font-serif font-normal; }
+}
+
+@layer components {
+  /* ── Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-cv
+           bg-accent text-white font-semibold text-sm font-sans
+           border-none cursor-pointer transition-all duration-150
+           hover:bg-accent-2 active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-cv
+           bg-transparent text-ink-2 font-medium text-sm font-sans
+           border border-black/20 cursor-pointer transition-all duration-150
+           hover:bg-paper-2 active:scale-[0.99];
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-cv
+           bg-cvred text-white font-semibold text-sm font-sans
+           border-none cursor-pointer transition-all duration-150
+           hover:opacity-90 active:scale-[0.99];
+  }
+
+  /* ── Cards */
+  .card {
+    @apply bg-white border border-black/10 rounded-cv-lg shadow-cv;
+  }
+
+  .card-hover {
+    @apply card transition-shadow duration-200 hover:shadow-cv-lg;
+  }
+
+  /* ── Form fields */
+  .field-label {
+    @apply block text-xs font-bold tracking-wider uppercase text-ink-3 mb-1.5;
+  }
+
+  .field-input {
+    @apply w-full px-3 py-2.5 border border-black/20 rounded-cv
+           bg-paper text-ink font-sans text-sm
+           transition-all duration-150
+           focus:outline-none focus:border-accent-2 focus:ring-2 focus:ring-accent-2/10;
+  }
+
+  /* ── Status pills */
+  .pill-live {
+    @apply text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full
+           bg-cvgreen-light text-cvgreen;
+  }
+
+  .pill-closed {
+    @apply text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full
+           bg-paper-2 text-ink-3;
+  }
+
+  .pill-draft {
+    @apply text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full
+           bg-cvamber-light text-cvamber;
+  }
+
+  /* ── Metric cards */
+  .metric-card {
+    @apply bg-paper-2 rounded-cv p-4;
+  }
+
+  /* ── Notice box */
+  .notice-info {
+    @apply flex gap-2.5 p-3 rounded-cv bg-accent-light border border-accent-2/20
+           text-xs text-accent leading-relaxed;
+  }
+
+  /* ── Toast */
+  .toast {
+    @apply fixed top-4 right-4 z-[9999] px-4 py-3 rounded-cv shadow-cv-lg
+           text-sm text-white max-w-xs leading-snug;
+    animation: toastIn 0.22s ease;
+  }
+
+  /* ── Sidebar item */
+  .sidebar-item {
+    @apply flex items-center gap-2.5 w-full px-3 py-2 rounded-cv
+           text-sm font-medium font-sans text-ink-2 text-left
+           border-none bg-transparent cursor-pointer transition-all duration-150
+           hover:bg-paper-2 hover:text-ink;
+  }
+
+  .sidebar-item.active {
+    @apply bg-accent-light text-accent font-semibold;
+  }
+
+  /* ── Admin table rows */
+  .table-row {
+    @apply grid items-center px-5 py-3 border-b border-black/[0.07] gap-3;
+  }
+
+  .table-row:last-child { @apply border-b-0; }
+
+  .table-header {
+    @apply table-row bg-paper-2 text-[11px] font-bold uppercase tracking-wider text-ink-3;
+  }
+}
+
+@keyframes toastIn {
+  from { transform: translateY(-8px) translateX(4px); opacity: 0; }
+  to   { transform: translateY(0) translateX(0); opacity: 1; }
+}
+
+@keyframes barGrow {
+  from { width: 0%; }
+  to   { width: var(--bar-width); }
+}
+
+.bar-animated {
+  animation: barGrow 0.8s ease forwards;
+}
