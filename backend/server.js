@@ -9,7 +9,7 @@ const rateLimit = require('express-rate-limit');
 const authRoutes = require('./src/routes/auth.js');
 const electionRoutes = require('./src/routes/elections.js');
 const adminRoutes = require('./src/routes/admin.js');
-const { errorHandler } = require('./middleware/errorHandler');
+const { errorHandler } = require('./src/middleware/errorHandler');
 
 const app = express();
 
